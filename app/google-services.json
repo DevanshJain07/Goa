@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "778668653726",
+    "firebase_url": "https://goa-travel-guide.firebaseio.com",
+    "project_id": "goa-travel-guide",
+    "storage_bucket": "goa-travel-guide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:778668653726:android:2a62ad19bf7207acb64f8f",
+        "android_client_info": {
+          "package_name": "com.example.goa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "778668653726-gc4kg56r50n2ffvu3fa92g9e83q9p32l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKgzDifcHojO6wIgvTzYAhfyqLblqTigM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "778668653726-gc4kg56r50n2ffvu3fa92g9e83q9p32l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
