@@ -22,7 +22,7 @@ public class StartActivity extends AppCompatActivity {
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         //redirect if user is not null
         if (firebaseUser!=null){
-            startActivity(new Intent(StartActivity.this, MainActivity.class));
+            startActivity(new Intent(StartActivity.this, HomeActivity.class));
             finish();
         }
     }

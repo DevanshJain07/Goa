@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                                         reference.addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+                                                Intent intent=new Intent(LoginActivity.this,HomeActivity.class);
                                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
                                                 finish();
