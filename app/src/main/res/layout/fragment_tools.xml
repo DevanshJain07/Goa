@@ -34,7 +34,9 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_centerHorizontal="true"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:cardCornerRadius="64dp">
 
             <ImageView
@@ -106,6 +108,19 @@
 
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonAddImage"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/textView3"
+            android:layout_alignParentEnd="false"
+            android:layout_marginLeft="-16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toRightOf="@id/profileImage"
+            android:background="@drawable/buttonshape"
+            android:drawableLeft="@drawable/add_camera"
+            android:paddingLeft="8dp" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
