@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseUser firebaseUser;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     protected void onStart() {
         super.onStart();
@@ -82,6 +83,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_send:
                 Toast.makeText(this,"Send",Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_logout:
+                mAuth.signOut();
+                firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+                if (firebaseUser==null) {
+                    Toast.makeText(this,"Successfully Logged Out",Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(HomeActivity.this, StartActivity.class));
+                    finish();
+                }else {
+                    Toast.makeText(this,"Something Went Wrong",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
 
