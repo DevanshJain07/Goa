@@ -13,4 +13,16 @@
     <string name="menu_tools">Profile</string>
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
+
+    <array name="profile_options">
+        <item>
+            Photos Posted
+        </item>
+        <item>
+            Questions Asked
+        </item>
+        <item>
+            Comments Added
+        </item>
+    </array>
 </resources>
