@@ -26,7 +26,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class ProfileFragment extends Fragment {
 
-    private ImageView mImageView;
+    private static ImageView mImageView;
     private Button mCameraButton;
     private static final int REQUEST_IMAGE_CAPTURE=101;
 
