@@ -121,8 +121,7 @@
             android:layout_toRightOf="@id/profileImage"
             android:background="@drawable/buttonshape"
             android:drawableLeft="@drawable/add_camera"
-            android:paddingLeft="8dp"
-            android:onClick="takePicture"/>
+            android:paddingLeft="8dp" />
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
