@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.goa.fragments.CameraFragment;
+import com.example.goa.fragments.HomeFragment;
 import com.example.goa.fragments.MyPicFragment;
 import com.example.goa.fragments.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
@@ -56,9 +57,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new MyPicFragment()).commit();
+                    new HomeFragment()).commit();
 
-            navigationView.setCheckedItem(R.id.nav_mypics);
+            navigationView.setCheckedItem(R.id.nav_home);
         }
 
     }
@@ -68,6 +69,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
+            case R.id.nav_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new HomeFragment()).commit();
+                break;
             case R.id.nav_mypics:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyPicFragment()).commit();
