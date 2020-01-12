@@ -40,6 +40,7 @@
             app:cardCornerRadius="64dp">
 
             <ImageView
+                android:id="@+id/imageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
@@ -110,7 +111,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/buttonAddImage"
+            android:id="@+id/button"
             android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_above="@id/textView3"
@@ -120,7 +121,8 @@
             android:layout_toRightOf="@id/profileImage"
             android:background="@drawable/buttonshape"
             android:drawableLeft="@drawable/add_camera"
-            android:paddingLeft="8dp" />
+            android:paddingLeft="8dp"
+            android:onClick="takePicture"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
