@@ -58,7 +58,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new MyPicFragment()).commit();
 
-            navigationView.setCheckedItem(R.id.nav_my_pics);
+            navigationView.setCheckedItem(R.id.nav_mypics);
         }
 
     }
@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.nav_my_pics:
+            case R.id.nav_mypics:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyPicFragment()).commit();
                 break;
