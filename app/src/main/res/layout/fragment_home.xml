@@ -6,9 +6,26 @@
     tools:context=".fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <Button
+        android:id="@+id/button1"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:text="Capture Image"
+        android:layout_marginTop="55dp"
+        android:onClick="captureImage"
+        />
+    <Button
+        android:id="@+id/button2"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:text="Display Image"
+        android:layout_marginTop="55dp"
+        android:onClick="displayImage"
+        />
 </FrameLayout>
