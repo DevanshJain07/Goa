@@ -1,3 +1,5 @@
+package com.example.goa;
+
 import com.example.goa.fragments.Tab1;
 import com.example.goa.fragments.Tab2;
 import com.example.goa.fragments.Tab3;
@@ -8,18 +10,16 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-public class PagerAdapter extends FragmentStatePagerAdapter {
+public class MyPagerAdapter extends FragmentStatePagerAdapter {
 
-    int number;
+    int number = 3;
 
-    public PagerAdapter(@NonNull FragmentManager fm, int number) {
+    public MyPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
-        this.number = number;
     }
 
-    public PagerAdapter(@NonNull FragmentManager fm, int behavior, int number) {
+    public MyPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);
-        this.number = number;
     }
 
     @NonNull
@@ -28,13 +28,13 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
         switch(position){
         case 0:
         Tab1 tab1=new Tab1();
-        return Tab1;
+        return tab1;
         case 1:
         Tab2 tab2 = new Tab2();
-        return( Tab2);
+        return (tab2);
         case 2:
         Tab3 tab3 = new Tab3();
-        return(Tab3);
+        return (tab3);
         default:
         return null;}
     }
