@@ -16,4 +16,15 @@
         android:text="Capture Image"
         android:layout_marginTop="55dp"
         />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="@android:color/white"
+        android:text="Select Image"
+        android:layout_marginTop="150dp"
+        />
 </FrameLayout>

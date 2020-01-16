@@ -15,7 +15,6 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.goa.MyPagerAdapter;
@@ -88,14 +87,6 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
 
     }
 
-
-//    public void takePicture(View view) {
-//        Intent imageTakeIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//        if(imageTakeIntent.resolveActivity(getActivity().getPackageManager())!=null){
-//           startActivityForResult(imageTakeIntent,REQUEST_IMAGE_CAPTURE);
-//        }
-//    }
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
