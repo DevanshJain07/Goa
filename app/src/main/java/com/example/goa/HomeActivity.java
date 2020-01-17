@@ -4,42 +4,40 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.tensorflow.lite.Interpreter;
-import android.content.res.AssetFileDescriptor;
-import android.app.Activity;
-
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.goa.fragments.MonumentFragment;
 import com.example.goa.fragments.HomeFragment;
 import com.example.goa.fragments.MyPicFragment;
-import com.example.goa.fragments.MonumentFragment;
 import com.example.goa.fragments.ProfileFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public HomeFragment homeFragment;
-    public MyPicFragment myPicFragment;
-    public MonumentFragment monumentFragment;
-    public ProfileFragment profileFragment;
-    protected Interpreter tflite;
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     protected void onStart() {
         super.onStart();
@@ -56,17 +54,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        homeFragment = new HomeFragment();
-        myPicFragment = new MyPicFragment();
-        monumentFragment = new MonumentFragment();
-        profileFragment = new ProfileFragment();
-
-        try {
-            tflite = new Interpreter(loadModelFile(this));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -88,20 +75,63 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.nav_home);
         }
 
+
+
+        //To get latitude and longitude of the user
+
+        locationManager = (LocationManager)
+                this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                updateLocationInfo(location);
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }else {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+            Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (lastKnownLocation!=null){
+                updateLocationInfo(lastKnownLocation);
+            }
+        }
     }
 
-    private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
-//        AssetManager am = getAssets();
-//        InputStream inputStream = am.open("myfoldername/myfilename");
-//        File file = createFileFromInputStream(inputStream);
+    public void updateLocationInfo(Location location) {
+        Toast.makeText(HomeActivity.this,"Latitude: " + (float)location.getLatitude()+"\nLongitude: "+(float)location.getLongitude(),Toast.LENGTH_LONG).show();
 
-        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd("converted_model.tflite");
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = inputStream.getChannel();
-        long startOffset = fileDescriptor.getStartOffset();
-        long declaredLength = fileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+
     }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            startListening();
+        }
+    }
+    public void startListening(){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+        }
+
+    }
+
+
 
 
     @Override
@@ -110,19 +140,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        homeFragment).commit();
+                        new HomeFragment()).commit();
                 break;
             case R.id.nav_mypics:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        myPicFragment).commit();
+                        new MyPicFragment()).commit();
                 break;
             case R.id.nav_monument:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        monumentFragment).commit();
+                        new MonumentFragment()).commit();
                 break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        profileFragment).commit();
+                        new ProfileFragment()).commit();
                 break;
 
             case R.id.nav_logout:

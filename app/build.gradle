@@ -48,4 +48,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'org.tensorflow:tensorflow-android:1.7.0'
     implementation 'org.tensorflow:tensorflow-lite:+'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
 }
