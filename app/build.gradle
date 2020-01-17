@@ -39,4 +39,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.2.0'
     implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha04'
+    implementation 'org.tensorflow:tensorflow-android:1.7.0'
+    implementation 'org.tensorflow:tensorflow-lite:+'
+
 }

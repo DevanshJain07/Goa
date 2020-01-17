@@ -1,9 +1,13 @@
 package com.example.goa.fragments;
 
 import android.Manifest;
+import org.tensorflow.lite.Interpreter;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,7 +34,10 @@ import com.example.goa.HomeActivity;
 import com.example.goa.R;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -43,6 +50,7 @@ public class HomeFragment extends Fragment {
     private File imageFile=null;
     private Intent cameraIntent;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+    protected Interpreter tflite;
 
     @Nullable
     @Override
@@ -51,6 +59,11 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home,container,false);
 
         thisContext = container.getContext();
+        try {
+            tflite = new Interpreter(loadModelFile(getActivity()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         button1 = view.findViewById(R.id.button1);
 //        button2 = view.findViewById(R.id.button2);
@@ -150,5 +163,17 @@ public class HomeFragment extends Fragment {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-}
+    private MappedByteBuffer loadModelFile(Activity activity) throws IOException {
+//        AssetManager am = getAssets();
+//        InputStream inputStream = am.open("myfoldername/myfilename");
+//        File file = createFileFromInputStream(inputStream);
 
+        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd("converted_model.tflite");
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+    }
+
+}

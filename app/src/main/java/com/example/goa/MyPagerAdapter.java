@@ -35,6 +35,7 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
         case 2:
         Tab3 tab3 = new Tab3();
         return (tab3);
+
         default:
         return null;}
     }
