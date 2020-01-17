@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.goa.R;
 
-public class CameraFragment extends Fragment {
+public class MonumentFragment extends Fragment {
 
     @Nullable
     @Override

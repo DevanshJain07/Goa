@@ -13,7 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.goa.fragments.CameraFragment;
+import com.example.goa.fragments.MonumentFragment;
 import com.example.goa.fragments.HomeFragment;
 import com.example.goa.fragments.MyPicFragment;
 import com.example.goa.fragments.ProfileFragment;
@@ -77,20 +77,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new MyPicFragment()).commit();
                 break;
-            case R.id.nav_camera:
+            case R.id.nav_monument:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new CameraFragment()).commit();
+                        new MonumentFragment()).commit();
                 break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new ProfileFragment()).commit();
                 break;
-            case R.id.nav_share:
-                Toast.makeText(this, "Share", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.nav_send:
-                Toast.makeText(this, "Send", Toast.LENGTH_SHORT).show();
-                break;
+
             case R.id.nav_logout:
                 mAuth.signOut();
                 firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
