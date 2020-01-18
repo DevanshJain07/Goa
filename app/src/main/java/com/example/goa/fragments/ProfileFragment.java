@@ -1,20 +1,24 @@
 package com.example.goa.fragments;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.goa.MyPagerAdapter;
 import com.example.goa.R;
+import com.example.goa.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -64,6 +69,10 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
     private Bitmap compressedImageFile;
+    private static EditText nameEditText;
+    private static EditText emailEditText;
+    ProgressDialog pd;
+    private Button SaveButton;
 
 
     private StorageReference image_path;
@@ -72,6 +81,7 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        SaveButton=view.findViewById(R.id.Savebutton);
         TabLayout tabLayout;
         tabLayout = view.findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Photos Uploaded"));
@@ -112,6 +122,8 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://goa-travel-guide.appspot.com");
         mImageView = view.findViewById(R.id.imageView);
         mCameraButton = view.findViewById(R.id.button);
+        nameEditText=view.findViewById(R.id.nameEditText);
+        emailEditText=view.findViewById(R.id.emailEditText);
 
 
         firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -146,6 +158,23 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
 
             }
         });
+        SaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pd=new ProgressDialog(getActivity());
+                pd.setMessage("Please wait...");
+                pd.show();
+                String str_username=nameEditText.getText().toString();
+                String str_email=emailEditText.getText().toString();
+                if (TextUtils.isEmpty(str_username)||
+                        TextUtils.isEmpty(str_email)){
+                    Toast.makeText(getActivity(),"Every Info are Required!",Toast.LENGTH_SHORT).show();
+                }else{
+                    SaveButton(str_username,str_email);
+                }
+            }
+        });
+
 
 
         mCameraButton.setOnClickListener(new View.OnClickListener() {
@@ -266,5 +295,12 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+    public void SaveButton(String name,String email){
+
+
+
+
+
     }
 }

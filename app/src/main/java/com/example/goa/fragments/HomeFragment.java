@@ -29,12 +29,15 @@ import java.io.File;
 import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
-    private Button button1;
+    private Button imageCaptureBtn, imageSelectBtn;
     private Context thisContext;
     private static final int REQUEST_IMAGE_CAPTURE = 101;
+    private static final int PICK_IMAGE_REQUEST = 234;
     private File imageFile=null;
     private Intent cameraIntent;
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
+
+    private Uri filePath;
 
     @Nullable
     @Override
@@ -44,37 +47,57 @@ public class HomeFragment extends Fragment {
 
         thisContext = container.getContext();
 
-        button1 = view.findViewById(R.id.button1);
-//        button2 = view.findViewById(R.id.button2);
+        imageCaptureBtn = view.findViewById(R.id.button1);
+        imageSelectBtn = view.findViewById(R.id.button2);
 
-        button1.setOnClickListener(new View.OnClickListener() {
+        imageCaptureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (ContextCompat.checkSelfPermission(thisContext,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                        != PackageManager.PERMISSION_GRANTED) {
 
-                    ActivityCompat.requestPermissions(getActivity(),
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                } else {
-                    cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (cameraIntent.resolveActivity(getActivity().getPackageManager())!=null){
-                        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-                    }
+                checkPermission();
+
+                cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (cameraIntent.resolveActivity(getActivity().getPackageManager())!=null){
+                    startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
                 }
-
             }
         });
 
-//        button2.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                displayImage();
-//            }
-//        });
+        imageSelectBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkPermission();
+                showFileChooser();
+            }
+        });
 
         return view;
+    }
+
+    private void checkPermission(){
+        if (ContextCompat.checkSelfPermission(thisContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+        if (ContextCompat.checkSelfPermission(thisContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
 
@@ -114,15 +137,30 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
 
-                Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+            Uri tempUri = getImageUri(getActivity().getApplicationContext(), photo);
+
+            imageFile = new File(getRealPathFromURI(tempUri));
+
+            displayImage();
+        }
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
+
+                Uri tempUri = getImageUri(getActivity().getApplicationContext(), bitmap);
 
                 imageFile = new File(getRealPathFromURI(tempUri));
 
                 displayImage();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+        }
     }
 
     @Override
@@ -130,10 +168,7 @@ public class HomeFragment extends Fragment {
 
         if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (cameraIntent.resolveActivity(getActivity().getPackageManager())!=null){
-                    startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                return;
             } else {
                 Toast.makeText(thisContext, "Permission Denied", Toast.LENGTH_SHORT).show();
             }
@@ -143,4 +178,3 @@ public class HomeFragment extends Fragment {
     }
 
 }
-

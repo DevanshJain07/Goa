@@ -81,12 +81,15 @@ public class RegisterActivity extends AppCompatActivity {
                             FirebaseUser firebaseUser= auth.getCurrentUser();
                             String userid=firebaseUser.getUid();
                             reference= FirebaseDatabase.getInstance().getReference().child("Users").child(userid);
+                            String email= firebaseUser.getEmail();
+
+
 
                             HashMap<String,Object> hashMap=new HashMap<>();
                             hashMap.put("id",userid);
                             hashMap.put("username",username.toLowerCase());
                             hashMap.put("fullname",fullname);
-//                            hashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/instagram-clone-7347d.appspot.com/o/mystery2.png?alt=media&token=5768fe7b-27d3-41b5-8281-cbcbc703f579");
+//                          hashMap.put("imageurl","https://firebasestorage.googleapis.com/v0/b/instagram-clone-7347d.appspot.com/o/mystery2.png?alt=media&token=5768fe7b-27d3-41b5-8281-cbcbc703f579");
 
                             reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -95,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
                                         pd.dismiss();
                                         Intent intent=new Intent(RegisterActivity.this,HomeActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
+                                         startActivity(intent);
                                     }
                                 }
                             });
