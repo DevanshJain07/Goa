@@ -39,6 +39,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     LocationManager locationManager;
     LocationListener locationListener;
 
+    public HomeFragment homeFragment;
+    public MonumentFragment monumentFragment;
+    public MyPicFragment myPicFragment;
+    public ProfileFragment profileFragment;
+
     protected void onStart() {
         super.onStart();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -58,6 +63,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        homeFragment = new HomeFragment();
+        myPicFragment = new MyPicFragment();
+        monumentFragment = new MonumentFragment();
+        profileFragment = new ProfileFragment();
+
         drawer = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -67,15 +77,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new HomeFragment()).commit();
-
-            navigationView.setCheckedItem(R.id.nav_home);
-        }
-
-
 
         //To get latitude and longitude of the user
 
@@ -111,6 +112,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 updateLocationInfo(lastKnownLocation);
             }
         }
+
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    homeFragment).commit();
+
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
+
+
     }
 
     public void updateLocationInfo(Location location) {
@@ -140,19 +152,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.nav_home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new HomeFragment()).commit();
+                        homeFragment).commit();
                 break;
             case R.id.nav_mypics:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MyPicFragment()).commit();
+                        myPicFragment).commit();
                 break;
             case R.id.nav_monument:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new MonumentFragment()).commit();
+                        monumentFragment).commit();
                 break;
             case R.id.nav_profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ProfileFragment()).commit();
+                        profileFragment).commit();
                 break;
 
             case R.id.nav_logout:

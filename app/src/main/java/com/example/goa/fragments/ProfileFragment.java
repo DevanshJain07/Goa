@@ -107,7 +107,8 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
         user_id = firebaseAuth.getCurrentUser().getUid();
 
         firebaseFirestore= FirebaseFirestore.getInstance();
-        storageReference = FirebaseStorage.getInstance().getReference();
+//        storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://goa-travel-guide.appspot.com");
         mImageView = view.findViewById(R.id.imageView);
         mCameraButton = view.findViewById(R.id.button);
 
@@ -186,40 +187,6 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
         }
 
 
-
-        if ( mainImageURI != null) {
-
-
-
-
-
-            user_id = firebaseAuth.getCurrentUser().getUid();
-
-            image_path = storageReference.child("profile_images").child(user_id + ".jpg");
-            image_path.putFile(mainImageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-
-
-                    if (task.isSuccessful()) {
-
-
-                        storeFirestore(task);
-
-                    } else {
-
-                        String error = task.getException().getMessage();
-                        Toast.makeText(getContext(), "Error : " + error, Toast.LENGTH_LONG).show();
-
-                    }
-
-
-                }
-            });
-
-
-
-        }
     }
 
     private void storeFirestore(Task<UploadTask.TaskSnapshot> task) {
@@ -252,6 +219,32 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
         });
     }
 
+    public void uploadImage(){
+        if ( mainImageURI != null) {
+            user_id = firebaseAuth.getCurrentUser().getUid();
+
+            image_path = storageReference.child("profile_images").child(user_id + ".jpg");
+            image_path.putFile(mainImageURI).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+
+                    if (task.isSuccessful()) {
+
+
+                        storeFirestore(task);
+
+                    } else {
+
+                        String error = task.getException().getMessage();
+                        Toast.makeText(getContext(), "Error : " + error, Toast.LENGTH_LONG).show();
+
+                    }
+                }
+            });
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode,int resultCode,Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -262,7 +255,7 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
                 Bitmap imageBitmap = (Bitmap) extras.get("data");
                 mainImageURI= getImageUri(getContext(),imageBitmap);
                 mImageView.setImageBitmap(imageBitmap);
-
+                uploadImage();
             }
         }
     }
