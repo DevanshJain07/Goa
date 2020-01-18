@@ -53,6 +53,7 @@ public class ProfileFragment extends Fragment implements Tab3.OnFragmentInteract
 
     }
 
+
     private static ImageView mImageView;
     private Button mCameraButton;
     private static final int REQUEST_IMAGE_CAPTURE=101;

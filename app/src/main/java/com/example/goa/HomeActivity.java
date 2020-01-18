@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -29,10 +32,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import static com.example.goa.App.CHANNEL_1_ID;
+
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    private NotificationManagerCompat notificationManager;
     FirebaseUser firebaseUser;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -77,6 +83,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        //Notification
+        notificationManager = NotificationManagerCompat.from(this);
+        letsNotify();
+
+
 
         //To get latitude and longitude of the user
 
@@ -194,5 +207,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             super.onBackPressed();
         }
+    }
+
+    public void letsNotify(){
+
+        Notification notification = new NotificationCompat.Builder(this,CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_one)
+                .setContentTitle("HEY")
+                .setContentText("I M ALIVE")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .build();
+
+        notificationManager.notify(1,notification);
     }
 }
